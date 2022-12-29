@@ -51,20 +51,36 @@
 
     // open the file
     $file = fopen($fileName, "a+");
+    ?>
 
-    // output old records
-    for ($x = 0; $x < $lines; $x++ ) {
-            $oldRecord = fgets($file);
-            ?>
-            <input type="checkbox" name="check_delete[]"> 
+    <form action="" method="post">
+
+    <div>
     <?php
+        // output old records
+    $my_array = array();
+    for ($x = 1; $x <= $lines; $x++ ) {
+            $oldRecord = fgets($file);
+           $my_array1 = array($x => $oldRecord);
+           array_push($my_array, $my_array1);
+            ?>
+            <input type="checkbox" name="check_delete[]" value="true"> 
+        <?php
             echo $oldRecord."<br>";
         }
-        ?>
+    echo count($my_array)."<br>";
+    print_r($my_array);
+    // foreach($my_array as $value){
+    //     echo $value . "<br>";
+    // }
+    ?>
+        
+    </div>
 
-     <form action="" method="post">
+
      <input type="submit" name="delete" value="Delete">
      </form>
+
 
 <?php
     // input temperature today into the file
@@ -85,8 +101,10 @@ if(isset($_POST['delete'])){//to run PHP script on submit
 if(!empty($_POST['check_delete'])){
 // Loop to store and display values of individual checked checkbox.
 foreach($_POST['check_delete'] as $selected){
-echo $selected."</br>";
+echo "checked value: $selected.</br>";
 }
+}else {
+        echo "nothing selected.";
 }
 }
 ?>
