@@ -10,14 +10,6 @@
 
     date_default_timezone_set('Asia/Tokyo');
 
-    if( isset($_POST['submit']) ) {
-        echo "submit.<br>";
-    } else if ( isset($_POST['delete']) ) {
-    echo "delete.<br>";
-    } else {
-        echo "Nah..<br>";
-    }
-
     $fileName = "tempData.txt";
     $line = file($fileName);
     $lines = count($line); //the number of lines in tempData.txt
@@ -61,15 +53,17 @@
     $my_array = array();
     for ($x = 1; $x <= $lines; $x++ ) {
             $oldRecord = fgets($file);
+            $checkbox_label = "cb_$x";
            $my_array1 = array($x => $oldRecord);
            array_push($my_array, $my_array1);
             ?>
-            <input type="checkbox" name="check_delete[]" value="true"> 
+            <input type="checkbox" name=$checkbox_label value="true"> 
         <?php
+            echo $checkbox_label." ";
             echo $oldRecord."<br>";
         }
-    echo count($my_array)."<br>";
-    print_r($my_array);
+    //echo count($my_array)."<br>";
+    //print_r($my_array);
     // foreach($my_array as $value){
     //     echo $value . "<br>";
     // }
@@ -96,7 +90,20 @@
 ?>
 
 <?php
-if(isset($_POST['delete'])){//to run PHP script on submit
+
+if(isset($_POST['delete'])){
+    $done = false;
+    while (! $done) {
+        if(isset($checkbox_label)){
+           echo $checkbox_label;
+        } else {
+            echo "Nothing set.";
+            $done = true;
+        }
+    }
+
+}
+/* if(isset($_POST['delete'])){//to run PHP script on submit
     echo "clicked!";
 if(!empty($_POST['check_delete'])){
 // Loop to store and display values of individual checked checkbox.
@@ -106,13 +113,9 @@ echo "checked value: $selected.</br>";
 }else {
         echo "nothing selected.";
 }
-}
-?>
+} */
 
-<script>
-    let a = document.getElementsByName('check_delete')
-    <!-- alert(a); -->
-</script>
+?>
 
 </body>
 </html>
