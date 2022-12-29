@@ -12,22 +12,23 @@
 
     $fileName = "tempData.txt";
     $line = file($fileName);
-    $lastLine = array_pop($line);
+    $lines = count($line); //the number of lines in tempData.txt
+    $lastLine = array_pop($line); //might not need this
     $name = $_POST["name"];
-    $tempTdy = $_POST["temperature"]; // temperature today
+    $tempTdy = $_POST["temperature"]; //temperature today
     $timestamp = date("m-d-Y H:i");
 
     //temperature yesterday (if exists)
-    if (!empty($lastLine)) {
+    if ( 0 < $lines ) {
         $tempYdy = substr($lastLine, strpos($lastLine, ":") + 4);   
     }
 
-    // output messsages
+    //output messsages
     echo "Oh, $name-san.<br>";
     echo "Your temperature today is $tempTdy.<br>";
     if ($tempTdy < 37.5) {
         echo "That's good.<br>";
-    } elseif (!empty($lastLine) && $tempTdy < $tempYdy) {
+    } elseif ( (0 < $lines ) && $tempTdy < $tempYdy) {
         echo "That's better.<br>";
     } else {
         echo "That's high.<br>";
@@ -37,15 +38,16 @@
     // open the file
     $file = fopen($fileName, "a+");
 
-    // output old records until EOF is reached
-    while(! feof($file)) {
-      $oldRecord = fgets($file);
-      ?>
-      <input type="checkbox" name="check_delete[]"> 
-<?php
-      echo $oldRecord."<br>";
-    }
-    ?>
+    // output old records
+    for ($x = 0; $x < $lines; $x++ ) {
+            $oldRecord = fgets($file);
+            ?>
+            <input type="checkbox" name="check_delete[]"> 
+    <?php
+            echo $oldRecord."<br>";
+        }
+        ?>
+
 
      <input type="submit" name="delete" value="Delete">
 
