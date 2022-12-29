@@ -10,12 +10,26 @@
 
     date_default_timezone_set('Asia/Tokyo');
 
+    if( isset($_POST['submit']) ) {
+        echo "submit.<br>";
+    } else if ( isset($_POST['delete']) ) {
+    echo "delete.<br>";
+    } else {
+        echo "Nah..<br>";
+    }
+
     $fileName = "tempData.txt";
     $line = file($fileName);
     $lines = count($line); //the number of lines in tempData.txt
     $lastLine = array_pop($line); //might not need this
-    $name = $_POST["name"];
-    $tempTdy = $_POST["temperature"]; //temperature today
+    if (isset($_POST['submit'])) {
+        $name = $_POST["name"];
+        $tempTdy = $_POST["temperature"]; //temperature today
+    } else {
+        $name = "test";
+        $tempTdy = "test2"; //temperature today
+    }
+    
     $timestamp = date("m-d-Y H:i");
 
     //temperature yesterday (if exists)
@@ -48,15 +62,19 @@
         }
         ?>
 
-
+     <form action="" method="post">
      <input type="submit" name="delete" value="Delete">
+     </form>
 
 <?php
     // input temperature today into the file
-    fwrite($file, $timestamp);
-    fwrite($file, " ");
-    fwrite($file, $tempTdy);
-    fwrite($file, "\n");
+    //test
+    if (isset($_POST['submit'])) {
+        fwrite($file, $timestamp);
+        fwrite($file, " ");
+        fwrite($file, $tempTdy);
+        fwrite($file, "\n");
+    }
     fclose($file);
 
 ?>
@@ -72,6 +90,11 @@ echo $selected."</br>";
 }
 }
 ?>
+
+<script>
+    let a = document.getElementsByName('check_delete')
+    <!-- alert(a); -->
+</script>
 
 </body>
 </html>
