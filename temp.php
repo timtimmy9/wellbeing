@@ -57,22 +57,18 @@
            $my_array1 = array($x => $oldRecord);
            array_push($my_array, $my_array1);
             ?>
-            <input type="checkbox" name=$checkbox_label value="true"> 
+            <input type="checkbox" name=$checkbox_label value="1"> 
+            <input type="hidden" name=$checkbox_label value="0">
+            
         <?php
             echo $checkbox_label." ";
-            echo $oldRecord."<br>";
+            echo "<label>$oldRecord<br></label>";
+
         }
-    //echo count($my_array)."<br>";
-    //print_r($my_array);
-    // foreach($my_array as $value){
-    //     echo $value . "<br>";
-    // }
     ?>
         
     </div>
-
-
-     <input type="submit" name="delete" value="Delete">
+    <input type="submit" name="delete" value="delete">
      </form>
 
 
@@ -91,18 +87,36 @@
 
 <?php
 
+/* if(isset($_POST['delete'])){
+
+    $row_number = 0;    // Number of the line we are deleting
+    $file_out = file($fileName); // Read the whole file into an array
+
+    //Delete the recorded line
+    unset($file_out[$row_number]);
+
+    //Recorded in a file
+    file_put_contents("tempData.txt", implode("", $file_out));
+} else {
+    echo "Did nothing."; 
+} */
+
 if(isset($_POST['delete'])){
     $done = false;
+    $x = 1;
     while (! $done) {
-        if(isset($checkbox_label)){
-           echo $checkbox_label;
+        $checkbox_label = "cb_$x";
+        if(isset($_POST[$checkbox_label])){
+           echo $_POST[$checkbox_label]."<br>";
+           $x++;
         } else {
-            echo "Nothing set.";
+            echo "unchecked $_POST[$checkbox_label].<br>";
             $done = true;
         }
     }
-
 }
+
+
 /* if(isset($_POST['delete'])){//to run PHP script on submit
     echo "clicked!";
 if(!empty($_POST['check_delete'])){
