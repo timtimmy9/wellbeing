@@ -53,17 +53,17 @@
     $my_array = array();
     for ($x = 1; $x <= $lines; $x++ ) {
             $oldRecord = fgets($file);
-            $checkbox_label = "cb_$x";
-           $my_array1 = array($x => $oldRecord);
-           array_push($my_array, $my_array1);
+           // $checkbox_label = "cb_$x";
+           // $cb_lines = strval($x);
+          // $my_array1 = array($x => $oldRecord);
+          // array_push($my_array, $my_array1);
+
             ?>
-            <input type="checkbox" name=$checkbox_label value="1"> 
-            <input type="hidden" name=$checkbox_label value="0">
+            <label>
+            <input type="checkbox" name="checkbox[]" value="<?php echo htmlspecialchars($x); ?>">
             
         <?php
-            echo $checkbox_label." ";
-            echo "<label>$oldRecord<br></label>";
-
+          echo "<span>$oldRecord</span><br></label>";
         }
     ?>
         
@@ -76,10 +76,12 @@
     // input temperature today into the file
     //test
     if (isset($_POST['submit'])) {
-        fwrite($file, $timestamp);
-        fwrite($file, " ");
-        fwrite($file, $tempTdy);
-        fwrite($file, "\n");
+        if (isset($_POST["name"]) && isset($_POST["temperature"])) {
+            fwrite($file, $timestamp);
+            fwrite($file, " ");
+            fwrite($file, $tempTdy);
+            fwrite($file, "\n");
+        }
     }
     fclose($file);
 
@@ -87,47 +89,28 @@
 
 <?php
 
-/* if(isset($_POST['delete'])){
+    if(isset($_POST['delete'])){
+        //var_dump($_POST);
+        if(isset($_POST['checkbox'])){
+            $checkbox = $_POST['checkbox'];
+            $file_out = file($fileName); // Read the whole file into an array
+            $count_delete = 0;
+        // $values = implode(", ", $checkbox);
+            //print_r($checkbox);
+            //echo $values."<br>";
+            foreach ($checkbox as $cb_number) {
+                $row_number = $cb_number - 1 - $count_delete;    // Number of the line we are deleting
+                $file_out = file($fileName); // Read the whole file into an array
+            
+                //Delete the recorded line
+                unset($file_out[$row_number]);
 
-    $row_number = 0;    // Number of the line we are deleting
-    $file_out = file($fileName); // Read the whole file into an array
-
-    //Delete the recorded line
-    unset($file_out[$row_number]);
-
-    //Recorded in a file
-    file_put_contents("tempData.txt", implode("", $file_out));
-} else {
-    echo "Did nothing."; 
-} */
-
-if(isset($_POST['delete'])){
-    $done = false;
-    $x = 1;
-    while (! $done) {
-        $checkbox_label = "cb_$x";
-        if(isset($_POST[$checkbox_label])){
-           echo $_POST[$checkbox_label]."<br>";
-           $x++;
-        } else {
-            echo "unchecked $_POST[$checkbox_label].<br>";
-            $done = true;
+                //Recorded in a file
+                file_put_contents("tempData.txt", implode("", $file_out));
+                $count_delete = $count_delete + 1;
+            }
         }
     }
-}
-
-
-/* if(isset($_POST['delete'])){//to run PHP script on submit
-    echo "clicked!";
-if(!empty($_POST['check_delete'])){
-// Loop to store and display values of individual checked checkbox.
-foreach($_POST['check_delete'] as $selected){
-echo "checked value: $selected.</br>";
-}
-}else {
-        echo "nothing selected.";
-}
-} */
 
 ?>
 
