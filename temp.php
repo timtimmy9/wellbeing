@@ -2,7 +2,7 @@
 <html>
 <body>
 
-<?php
+    <?php
 
     //error logs
     error_reporting(E_ALL); 
@@ -13,6 +13,9 @@
     $fileName = "tempData.txt";
     $line = file($fileName);
     $lines = count($line); //the number of lines in tempData.txt
+
+    if (isset($_POST['submit'])) {
+        if (isset($_POST["name"]) && isset($_POST["temperature"])) {    
     $lastLine = array_pop($line); //might not need this
     if (isset($_POST['submit'])) {
         $name = $_POST["name"];
@@ -41,6 +44,9 @@
     }
     echo "<br>";
 
+        }
+    }
+
     // open the file
     $file = fopen($fileName, "a+");
     ?>
@@ -48,24 +54,17 @@
     <form action="" method="post">
 
     <div>
-    <?php
+<?php
         // output old records
-    $my_array = array();
     for ($x = 1; $x <= $lines; $x++ ) {
             $oldRecord = fgets($file);
-           // $checkbox_label = "cb_$x";
-           // $cb_lines = strval($x);
-          // $my_array1 = array($x => $oldRecord);
-          // array_push($my_array, $my_array1);
-
-            ?>
+?>
             <label>
             <input type="checkbox" name="checkbox[]" value="<?php echo htmlspecialchars($x); ?>">
-            
-        <?php
+<?php
           echo "<span>$oldRecord</span><br></label>";
         }
-    ?>
+?>
         
     </div>
     <input type="submit" name="delete" value="delete">
@@ -85,7 +84,7 @@
     }
     fclose($file);
 
-?>
+    ?>
 
 <?php
 
