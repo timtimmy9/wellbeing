@@ -108,6 +108,7 @@
                 file_put_contents("tempData.txt", implode("", $file_out));
                 $count_delete = $count_delete + 1;
             }
+        // reload / format the page
         }
     }
 
