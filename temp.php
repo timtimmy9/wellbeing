@@ -70,7 +70,6 @@
     <input type="submit" name="delete" value="delete">
      </form>
 
-
 <?php
     // input temperature today into the file
     //test
@@ -109,6 +108,7 @@
                 $count_delete = $count_delete + 1;
             }
         // reload / format the page
+        header("Refresh:0");
         }
     }
 
