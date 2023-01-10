@@ -22,10 +22,9 @@ session_start();
             $_SESSION["lastLine"] = array_pop($line); //might not need this
             $_SESSION["name"] = $_POST["name"];
             $_SESSION["tempTdy"] = $_POST["temperature"]; //temperature today
+            $timestamp = date("m-d-Y H:i"); //timestamp
         }
     }
-    
-    $timestamp = date("m-d-Y H:i");
 
     //temperature yesterday (if exists)
     if ( 0 < $lines ) {
