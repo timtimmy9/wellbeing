@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <body>
@@ -13,39 +16,33 @@
     $fileName = "tempData.txt";
     $line = file($fileName);
     $lines = count($line); //the number of lines in tempData.txt
-
+ 
     if (isset($_POST['submit'])) {
-        if (isset($_POST["name"]) && isset($_POST["temperature"])) {    
-    $lastLine = array_pop($line); //might not need this
-    if (isset($_POST['submit'])) {
-        $name = $_POST["name"];
-        $tempTdy = $_POST["temperature"]; //temperature today
-    } else {
-        $name = "test";
-        $tempTdy = "test2"; //temperature today
+        if (isset($_POST["name"]) && isset($_POST["temperature"])) {   
+            $_SESSION["lastLine"] = array_pop($line); //might not need this
+            $_SESSION["name"] = $_POST["name"];
+            $_SESSION["tempTdy"] = $_POST["temperature"]; //temperature today
+        }
     }
     
     $timestamp = date("m-d-Y H:i");
 
     //temperature yesterday (if exists)
     if ( 0 < $lines ) {
-        $tempYdy = substr($lastLine, strpos($lastLine, ":") + 4);   
+        $tempYdy = substr($_SESSION["lastLine"], strpos($_SESSION["lastLine"], ":") + 4);   
     }
 
     //output messsages
-    echo "Oh, $name-san.<br>";
-    echo "Your temperature today is $tempTdy.<br>";
-    if ($tempTdy < 37.5) {
+    echo "Oh, " . $_SESSION["name"]. "-san.<br>";
+    echo "Your temperature today is " . $_SESSION["tempTdy"]. ".<br>";
+    if ($_SESSION["tempTdy"] < 37.5) {
         echo "That's good.<br>";
-    } elseif ( (0 < $lines ) && $tempTdy < $tempYdy) {
+    } elseif ( (0 < $lines ) && $_SESSION["tempTdy"] < $tempYdy) {
         echo "That's better.<br>";
     } else {
         echo "That's high.<br>";
     }
     echo "<br>";
-
-        }
-    }
 
     // open the file
     $file = fopen($fileName, "a+");
@@ -77,7 +74,7 @@
         if (isset($_POST["name"]) && isset($_POST["temperature"])) {
             fwrite($file, $timestamp);
             fwrite($file, " ");
-            fwrite($file, $tempTdy);
+            fwrite($file, $_SESSION["tempTdy"]);
             fwrite($file, "\n");
         }
     }
