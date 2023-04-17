@@ -64,18 +64,22 @@ session_start();
         
     </div>
     <input type="submit" name="delete" value="delete">
+    <input type="submit" name="genPdf" value="genPdf">
      </form>
 
 <?php
     // input temperature today into the file
     //test
-    if (isset($_POST['submit'])) {
+    if (isset($_POST['delete'])) {
         if (isset($_POST["name"]) && isset($_POST["temperature"])) {
             fwrite($file, $timestamp);
             fwrite($file, " ");
             fwrite($file, $_SESSION["tempTdy"]);
             fwrite($file, "\n");
         }
+    } elseif (isset($_POST['genPdf'])) {
+        echo "generate a pdf file";
+
     }
     fclose($file);
 
